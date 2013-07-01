@@ -37,6 +37,14 @@ exports.static_site = function()
 	* publically accessibly methods
 	*/
 	return {
+		setConfig: function(obj){
+			docpadInstanceConfiguration = obj;
+		},
+
+		getConfig: function(){
+			return docpadInstanceConfiguration;
+		},
+
 		setOpts: function(obj){
 			opts = obj;
 		},

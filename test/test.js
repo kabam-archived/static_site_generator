@@ -1,8 +1,8 @@
 var assert = require("assert");
 var generator = require("../bin/ssg");
 var docpad = require('docpad');
-
-var docpadInstanceConfiguration = {outPath: '../out', srcPath: '../src'};
+//set testing config
+var docpadInstanceConfiguration = {pluginsPaths: ['../node_modules','plugins'], outPath: '../out', srcPath: '../src'};
 
 describe('static site namespace', function(){
 
@@ -18,20 +18,26 @@ describe('static site namespace', function(){
       assert(site);
     })
 
-    it('site options should be set', function(){
+    it('rendering options should be set', function(){
       site.setOpts(testOpts);
-      assert.deepEqual(testOpts, site.getOpts())
-  })
+      assert.deepEqual(testOpts, site.getOpts());
+    })
 
-  it('generates a site without error', function(done){   
+    it('configuration options should be set', function(){
+      site.setConfig(docpadInstanceConfiguration);
+      assert.deepEqual(docpadInstanceConfiguration, site.getConfig());
+    })
+
+
+    it('generates a site without error', function(done){   
       site.getInstance(function(err, docpadInstance){
         docpadInstance.action('generate', function(err,result){
           if (err)  return console.log(err.stack);
           console.log('OK');
           done();
-      });
+        });
+      })
     })
+
   })
-  
-})
 })
