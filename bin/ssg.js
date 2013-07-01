@@ -1,4 +1,5 @@
 
+var fs = require('fs');
 /**
  * Static Site namespace
  */
@@ -24,6 +25,14 @@ exports.static_site = function()
     			console.log('OK');
 			});
 		}
+	}
+
+	var	writeFile = function(obj, cb){
+    	fs.writeFile('src/documents/' + obj.filename + '.html.md', obj.text, function (err) {
+  		if (err) return console.log(err);
+  		console.log('result > result.html');
+		});
+		cb();
 	}
 
 	/**
@@ -62,6 +71,8 @@ exports.static_site = function()
 		},
 
 		getInstance: instance,	
+
+		writeFile: writeFile
 		
 	};
 
@@ -77,11 +88,12 @@ site.setOpts({
     		renderSingleExtensions:true
 		});
 
-site.setOpts({path: 'readme.md', out: 'readme.html',
-    renderSingleExtensions:true})
+//site.setOpts({path: 'readme.md', out: 'readme.html',
+//    renderSingleExtensions:true})
 
 //generate files in src folder by default, outputs to out folder
 site.getInstance(site.getGenerateCallback());
+//site.writeFile(site.getOpts());
 	
 
 })()
