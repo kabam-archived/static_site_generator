@@ -1,4 +1,4 @@
-var docpad = require('docpad');
+
 /**
  * Static Site namespace
  */
@@ -7,34 +7,30 @@ exports.static_site = function()
 	/**
  	* Object to set configuration settings
  	*/
-	var docpadInstanceConfiguration = {};
-	var doc;
-	var opts = {};
-	var cb = {
+ 	var docpad = require('docpad');
+	var docpadInstanceConfiguration, opts = {};
 
+	var callbacks = {
 		renderJSON: function(err,docpadInstance){
-    		if (err)  return console.log(err.stack);
     		docpadInstance.action('render', opts, function(err,result){
-    		console.log(result);
+    			if (err)  return console.log(err.stack);
+    			console.log(result);
 			});
 		},
 
 		generate: function(err, docpadInstance){
     		docpadInstance.action('generate', function(err,result){
-    		if (err)  return console.log(err.stack);
-    		console.log('OK');
+    			if (err)  return console.log(err.stack);
+    			console.log('OK');
 			});
 		}
 	}
+
 	/**
  	* Creates a Docpad instance
  	*/
-	var renderObj = function(){
-		docpad.createInstance(docpadInstanceConfiguration, cb.renderJSON);
-	} 
-
-	var generateDoc = function(){
-		docpad.createInstance(docpadInstanceConfiguration, cb.generate);
+	var instance = function(cb){
+		docpad.createInstance(docpadInstanceConfiguration, cb);
 	} 
 
 	/**
@@ -49,9 +45,15 @@ exports.static_site = function()
 			return opts;
 		},
 
-		render: renderObj,
+		getGenerateCallback: function(){
+			return callbacks.generate;
+		},
 
-		generateSite: generateDoc		
+		getRenderCallback: function(){
+			return callbacks.renderJSON;
+		},
+
+		getInstance: instance,	
 		
 	};
 
@@ -70,9 +72,8 @@ site.setOpts({
 site.setOpts({path: 'readme.md', out: 'readme.html',
     renderSingleExtensions:true})
 
-//site.render();
 //generate files in src folder by default, outputs to out folder
-site.generateSite();
+site.getInstance(site.getGenerateCallback());
 	
 
 })()
