@@ -27,12 +27,12 @@ exports.static_site = function()
 		}
 	}
 
-	var	writeFile = function(obj, cb){
+	var writeFile = function(obj, next){
     	fs.writeFile('src/documents/' + obj.filename + '.html.md', obj.text, function (err) {
-  		if (err) return console.log(err);
-  		console.log('result > result.html');
-		});
-		cb();
+  			if (err) return console.log(err);
+  			console.log('result > result.html');
+  			next();
+		});	
 	}
 
 	/**

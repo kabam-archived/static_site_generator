@@ -5,8 +5,9 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
+  , editor = require('./routes/editor')
   , http = require('http')
+  , api = require('./routes/api')
   , path = require('path');
 
 var app = express();
@@ -28,7 +29,17 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+//app.get('/partials/:name', routes.partials);
+app.get('/editor', editor.index)
+
+// JSON API
+
+app.get('/api/posts', api.posts);
+
+app.get('/api/post/:id', api.post);
+app.post('/api/post', api.addPost);
+app.put('/api/post/:id', api.editPost);
+app.delete('/api/post/:id', api.deletePost);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
