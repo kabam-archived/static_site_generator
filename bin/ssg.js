@@ -1,5 +1,8 @@
 var fs = require('fs');
-
+var mongoose = require('mongoose');
+//mongoose.connect('mongodb://localhost/test');
+var mongoFile = require('../models/mongoFile');
+MongoFile = mongoose.model('MongoFile');
 /**
  * Static Site namespace
  */
@@ -77,24 +80,57 @@ exports.static_site = function()
 	};
 
 }();
+var testMarkdown = new MongoFile({
+	name: 'markdown2',
+	filetype: 'md',
+	content: 'here is some **markdown**',
+	siteID: 'test',
+    path: '/src/documents/'
+});
 
 var site = exports.static_site;
 //test object
 (function(){
 
 site.setOpts({
-    		text: 'here is some **markdown**',
+    		text: 'I like long!! walks on the beach. **Plus I rock at DocPad!**',
     		filename:'markdown',
+    		srcPath: 'src', 
+    		outPath: 'out',
+    		actions: ['renderExtensions', 'renderDocument', 'renderLayouts'],
+    		attributes: { meta: { title: 'About Me', layout: 'default', isPage: true, outFilename: 'about.html', srcPath: 'src', outPath: 'out', outExtension: 'html' } },
+    		filename: 'about.html.md',
+        	basename: 'about',
+        	extension: 'md',
     		renderSingleExtensions:true
 		});
 
 //site.setOpts({path: 'readme.md', out: 'readme.html',
 //    renderSingleExtensions:true})
 
+var docpadInstanceConfiguration = {};
+require('docpad').createInstance(docpadInstanceConfiguration, function(err,docpadInstance){
+    if (err)  return console.log(err.stack);
+    var document = docpadInstance.createDocument({
+    	filename: 'markdown'
+    	,body: 'I like long!! walks on the beach. **Plus I rock at DocPad!**'
+    	,referencesOthers: true
+    	,renderSingleExtensions: true
+    	,meta: { title: 'About Me', layout: 'default', isPage: true }
+    	,outFilename: 'about.html'
+    	},{});
+    document.renderDocument.apply(document, {});
+    console.log(document);
+});
 //generate files in src folder by default, outputs to out folder
-site.getInstance(site.getGenerateCallback());
+//site.getInstance(site.getGenerateCallback());
+//site.getInstance(site.getRenderCallback())
 //site.writeFile(site.getOpts());
-	
+ // testMarkdown.save();
+//});
+
+
+//testMarkdown.save();
 
 })()
 

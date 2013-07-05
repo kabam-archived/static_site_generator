@@ -5,7 +5,11 @@ var mongoose = require('mongoose')
 //var db = mongoose.connection;
 
  var siteSchema = mongoose.Schema({
-    name: String
+    name: String,
+    srcPath: String,
+    outPath: String,
+    template: String,
+
 });
 
 var Site = mongoose.model('Site', siteSchema);

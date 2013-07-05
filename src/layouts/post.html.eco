@@ -1,0 +1,15 @@
+---
+title: "Test Post"
+layout: "default"
+isPage: true
+date: 2013-06-26
+---
+<h2>Current Posts</h2>
+<% for page in @getCollection("posts").toJSON(): %>
+        <li class="<%= if page.id is @document.id then 'active' else 'inactive' %>">
+            <a href="<%= page.url %>">
+                <%= page.title %>
+            </a>
+        </li>
+    <% end %>
+<div class="post"><%- @content %></div>
