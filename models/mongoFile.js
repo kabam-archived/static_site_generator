@@ -4,7 +4,7 @@ mongoose.connect('mongodb://localhost/ssg_dev');
 
  var mongoFileSchema = mongoose.Schema({
     name: String,
-    fileType: String,
+    type: String,
     content: String,
     siteID: String,
     path: String,
