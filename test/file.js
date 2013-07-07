@@ -25,6 +25,7 @@ describe('Mongo File Schema', function(){
 
     it('a MongoFile record should exist', function(){  
       assert(testAbout);
+      assert.equal(testAbout.name, 'about');
     })
 
     it('should save the file if it doesnt exist', function(done){

@@ -11,3 +11,4 @@ mongoose.connect('mongodb://localhost/ssg_dev');
 },{ collection: 'siteFiles' });
 
 var MongoFile = mongoose.model('MongoFile', mongoFileSchema);
+module.MongoFile = MongoFile;

@@ -20,6 +20,10 @@ var testIndex = new MongoFile({
 	siteID: 'test',
 	path: 'src/documents/'
 });
+
+var testLayout = new MongoFile({
+
+});
  
 testDocs.push(testAbout);
 testDocs.push(testIndex);
