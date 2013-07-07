@@ -1,7 +1,7 @@
 var fs = require('fs');
 var mkdirp = require('mkdirp');
-require('../models/mongoFile');
-MongoFile = require('mongoose').model('MongoFile');
+require('../models/siteFile');
+SiteFile = require('mongoose').model('SiteFile');
 /**
  * Static Site namespace
  */
@@ -12,7 +12,9 @@ exports.static_site = function()
  	*/
  	var docpad = require('docpad');
 	var docpadInstanceConfiguration, opts = {};
-
+	/**
+	* DocPad callbacks
+	*/
 	var callbacks = {
 		render: function(err,docpadInstance){
     		docpadInstance.action('render', opts, function(err,result){
@@ -28,11 +30,13 @@ exports.static_site = function()
 			});
 		}
 	}
-
+	/**
+	* Database functions
+	*/
 	//return files in array
 	var getFiles = function(opts, next){
 		if(!opts) opts = {};
-		MongoFile.find(opts, function (err, files){
+		SiteFile.find(opts, function (err, files){
 		  var counter = files.length;
 		  var returnObject = [];
 		  files.forEach(function(file) {  	
@@ -44,7 +48,11 @@ exports.static_site = function()
 
 	var getFile = function(opts, next){
 		if(!opts || Object.keys(opts).length === 0) return;
-		MongoFile.findOne(opts, function(err, obj){console.log(obj);})
+		SiteFile.findOne(opts, function(err, obj){
+			console.log(obj);
+
+		});
+		next();
 	};
 
 	var insertFile = function(){
@@ -54,8 +62,6 @@ exports.static_site = function()
 	var updateFile = function(){
 
 	};
-
-
 
 	//write files to src directory
 	var writeFile = function(obj, next){
@@ -128,11 +134,11 @@ var site = exports.static_site;
 //test object
 (function(){
 
-	var callback = function (obj) {
-		site.writeFile(obj, function(){console.log('complete');});
-	}
+	//var callback = function (obj) {
+	//	site.writeFile(obj, function(){console.log('complete');});
+	//}
 
-	site.getFile({'name': 'about'}, callback);
+	//site.getFile({'name': 'about'}, callback);
 
 })()
 

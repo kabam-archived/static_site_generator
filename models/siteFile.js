@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/ssg_dev');
 
 
- var mongoFileSchema = mongoose.Schema({
+ var siteFileSchema = mongoose.Schema({
     name: String,
     type: String,
     content: String,
@@ -10,5 +10,4 @@ mongoose.connect('mongodb://localhost/ssg_dev');
     path: String,
 },{ collection: 'siteFiles' });
 
-var MongoFile = mongoose.model('MongoFile', mongoFileSchema);
-module.MongoFile = MongoFile;
+var SiteFile = mongoose.model('SiteFile', siteFileSchema);

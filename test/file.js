@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
-var mongoFile = require('../models/mongoFile');
-MongoFile = mongoose.model('MongoFile');
+var SiteFile = require('../models/siteFile');
+SiteFile = mongoose.model('SiteFile');
 var assert = require("assert");
+var generator = require("../bin/ssg");
 
-var testAbout = new MongoFile({
+var testAbout = new SiteFile({
 	name: 'about',
 	type: 'html.md',
 	content: 'here is some **markdown**',
@@ -11,7 +12,7 @@ var testAbout = new MongoFile({
     path: 'src/documents/'
 });
 
-var testIndex = new MongoFile({
+var testIndex = new SiteFile({
 	name: 'index',
 	type: 'html',
 	content: '---\ntitle: "Welcome!"\nlayout: "default"\nisPage: true\n---\n\n<p>Welcome to My Website!</p>',
@@ -19,18 +20,24 @@ var testIndex = new MongoFile({
 	path: 'src/documents/'
 });
 
-describe('Mongo File Schema', function(){
+var site = generator.static_site;
+
+describe('Site File Schema', function(){
 
   describe('new record', function(){
 
-    it('a MongoFile record should exist', function(){  
+    it('a SiteFile record should exist', function(){  
       assert(testAbout);
       assert.equal(testAbout.name, 'about');
     })
 
+    it('require parameters when requesting a single document', function(){
+    	assert.equal(site.getFile({}), undefined);
+    })
+
     it('should save the file if it doesnt exist', function(done){
-    	MongoFile.find({'name': testAbout.name, 'type': testAbout.type, 'path': testAbout.path}).remove();
-		MongoFile.findOne({'name': testAbout.name, 'type': testAbout.type, 'path': testAbout.path}, function(err, file){
+    	SiteFile.find({'name': testAbout.name, 'type': testAbout.type, 'path': testAbout.path}).remove();
+		SiteFile.findOne({'name': testAbout.name, 'type': testAbout.type, 'path': testAbout.path}, function(err, file){
  			if (err) {
      			console.log(err.name);
      			return;
