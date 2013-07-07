@@ -38,20 +38,5 @@ describe('static site namespace', function(){
       })
     })
 
-    it('renders json to html without error', function(done){  
-      site.setOpts({path: '../readme.md', out: '../out/readme.html', renderSingleExtensions:true});
-      site.getInstance(function(err, docpadInstance){
-        docpadInstance.action('render', site.getOpts(), function(err,result){
-          if (err)  return console.log(err.stack);
-          console.log(result);
-          done();
-        });
-      })
-    })
-
-    it('can write a json file to markdown', function(done){   
-      site.writeFile(testOpts, done);
-    })
-
   })
 })

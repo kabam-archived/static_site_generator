@@ -30,6 +30,20 @@ exports.static_site = function()
 		}
 	}
 
+	//return files in array
+	var getFiles = function(opts, next){
+		if(!opts) opts = {};
+		MongoFile.find(opts, function (err, files){
+		  var counter = files.length;
+		  var returnObject = [];
+		  files.forEach(function(file) {  	
+		      returnObject.push(file);     
+		  });
+			next(returnObject);
+		});
+	};
+
+	//write files to src directory
 	var writeFile = function(obj, next){
 		obj.forEach(function(file){
 			//create path if it doesn't exist
@@ -45,7 +59,7 @@ exports.static_site = function()
 				});	
 			});			
 		});
-    	
+		next(); 	
 	}
 
 	/**
@@ -83,48 +97,26 @@ exports.static_site = function()
 			return callbacks.renderJSON;
 		},
 
-		getInstance: instance,	
+		getInstance: instance,
+
+		getFiles: getFiles,	
 
 		writeFile: writeFile
 		
 	};
 
 }();
-var testAbout = new MongoFile({
-	name: 'about',
-	type: 'md',
-	content: 'here is some **markdown**',
-	siteID: 'test',
-    path: 'src/documents/'
-});
-
-var testIndex = new MongoFile({
-	name: 'index',
-	type: 'html',
-	content: '---\ntitle: "Welcome!"\nlayout: "default"\nisPage: true\n---\n\n<p>Welcome to My Website!</p>',
-	siteID: 'test',
-	path: 'src/documents/'
-});
 
 
 var site = exports.static_site;
 //test object
 (function(){
- //testAbout.save();
- //testIndex.save();
-var callback = function (obj) {
- site.writeFile(obj);
-}
 
-MongoFile.find({}, function (err, files){
-  var counter = files.length;
-  var returnObject = [];
-  files.forEach(function(file) {  	
-      returnObject.push(file);     
-  });
-	callback(returnObject);
-});
+	var callback = function (obj) {
+		site.writeFile(obj, function(){console.log('complete');});
+	}
 
+	site.getFiles(null, callback);
 
 })()
 
