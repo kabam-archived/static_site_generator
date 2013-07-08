@@ -42,25 +42,38 @@ exports.static_site = function()
 		  files.forEach(function(file) {  	
 		      returnObject.push(file);     
 		  });
-			next(returnObject);
+			next(err, returnObject);
 		});
 	};
 
 	var getFile = function(opts, next){
 		if(!opts || Object.keys(opts).length === 0) return;
 		SiteFile.findOne(opts, function(err, obj){
+			if(err) return;
 			console.log(obj);
+			next();
+		});		
+	};
 
+	var insertFile = function(doc, next){
+		if(!doc || Object.keys(doc).length === 0) return;
+		SiteFile.findOne({'name': doc.name, 'type': doc.type, 'path': doc.path}, function(err, file){
+	 		if (err) {
+	     		console.log(err.name);
+	     	return;
+	  		}
+	  		if (!file){
+	    		console.log('Creating file...');
+	    		doc.save();
+	  		} else {
+	  			console.log('File with same name already exists please rename your file');	
+	  		}
+	  		next();
 		});
-		next();
 	};
 
-	var insertFile = function(){
-
-	};
-
-	var updateFile = function(){
-
+	var updateFile = function(opts, next){
+		if(!opts || Object.keys(opts).length === 0) return;
 	};
 
 	//write files to src directory
@@ -122,6 +135,8 @@ exports.static_site = function()
 		getFiles: getFiles,	
 
 		getFile: getFile,
+
+		insertFile: insertFile,
 
 		writeFile: writeFile
 		

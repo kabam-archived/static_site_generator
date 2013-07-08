@@ -35,6 +35,22 @@ describe('Site File Schema', function(){
     	assert.equal(site.getFile({}), undefined);
     })
 
+    it('finds a single document', function(done){
+    	site.getFile({'name': testAbout.name}, done);
+    })
+
+    it('returns a document collection', function(done){
+    	site.getFiles({}, done);
+    })
+
+    it('requires parameters to insert a new document', function(){
+    	assert.equal(site.insertFile({}, undefined));
+    })
+
+    it('inserts a new document if it does not exist', function(done){
+    	site.insertFile(testIndex,done);
+    })
+   
     it('should save the file if it doesnt exist', function(done){
     	SiteFile.find({'name': testAbout.name, 'type': testAbout.type, 'path': testAbout.path}).remove();
 		SiteFile.findOne({'name': testAbout.name, 'type': testAbout.type, 'path': testAbout.path}, function(err, file){
