@@ -8,72 +8,80 @@ SiteFile = require('mongoose').model('SiteFile');
 exports.static_site = function()
 {
 	/**
- 	* Object to set configuration settings
- 	*/
- 	var docpad = require('docpad');
+	* Object to set configuration settings
+	*/
+	var docpad = require('docpad');
 	var docpadInstanceConfiguration, opts = {};
 	/**
 	* DocPad callbacks
 	*/
 	var callbacks = {
 		render: function(err,docpadInstance){
-    		docpadInstance.action('render', opts, function(err,result){
-    			if (err)  return console.log(err.stack);
-    			console.log(result);
+			docpadInstance.action('render', opts, function(err,result){
+				if (err)  return console.log(err.stack);
+				console.log(result);
 			});
 		},
 
 		generate: function(err, docpadInstance){
-    		docpadInstance.action('generate', function(err,result){
-    			if (err)  return console.log(err.stack);
-    			console.log('OK');
+			docpadInstance.action('generate', function(err,result){
+				if (err)  return console.log(err.stack);
+				console.log('OK');
 			});
 		}
-	}
+	};
 	/**
 	* Database functions
 	*/
-	//return files in array
-	var getFiles = function(opts, next){
-		if(!opts) opts = {};
-		SiteFile.find(opts, function (err, files){
-		  var counter = files.length;
-		  var returnObject = [];
-		  files.forEach(function(file) {  	
-		      returnObject.push(file);     
-		  });
-			next(err, returnObject);
-		});
-	};
+	var dbInterface = {
+		//return files in array
+		getFiles: function(opts, next){
+			if(!opts) opts = {};
+			SiteFile.find(opts, function (err, files){
+				var counter = files.length;
+				var returnObject = [];
+				files.forEach(function(file) {
+					returnObject.push(file);
+				});
+				next(err, returnObject);
+			});
+		},
 
-	var getFile = function(opts, next){
-		if(!opts || Object.keys(opts).length === 0) return;
-		SiteFile.findOne(opts, function(err, obj){
-			if(err) return;
-			console.log(obj);
-			next();
-		});		
-	};
+		getFile: function(opts, next){
+			if(!opts || Object.keys(opts).length === 0) return;
+			SiteFile.findOne(opts, function(err, obj){
+				if(err) return;
+				console.log(obj);
+				next();
+			});		
+		},
 
-	var insertFile = function(doc, next){
-		if(!doc || Object.keys(doc).length === 0) return;
-		SiteFile.findOne({'name': doc.name, 'type': doc.type, 'path': doc.path}, function(err, file){
-	 		if (err) {
-	     		console.log(err.name);
-	     	return;
-	  		}
-	  		if (!file){
-	    		console.log('Creating file...');
-	    		doc.save();
-	  		} else {
-	  			console.log('File with same name already exists please rename your file');	
-	  		}
-	  		next();
-		});
-	};
+		insertFile: function(doc, next){
+			if(!doc || Object.keys(doc).length === 0) return;
+			SiteFile.findOne({'name': doc.name, 'type': doc.type, 'path': doc.path}, function(err, file){
+				if (err) {
+					console.log(err.name);
+					return;
+				}
+				if (!file){
+					console.log('Creating file...');
+					doc.save();
+				} else {
+					console.log('File with same name already exists please rename your file');	
+				}
+				next();
+			});
+		},
 
-	var updateFile = function(opts, next){
-		if(!opts || Object.keys(opts).length === 0) return;
+		updateFile: function(query, opts, next){
+			if(!opts || Object.keys(opts).length === 0) return;
+			SiteFile.update(query,opts, function (err, numberAffected, raw) {
+				if (err) return handleError(err);
+				console.log('The number of updated documents was %d', numberAffected);
+				console.log('The raw response from Mongo was ', raw);
+				next();
+			});
+		}
 	};
 
 	//write files to src directory
@@ -85,21 +93,21 @@ exports.static_site = function()
 				console.log(file.path + ' created or exists');
 				//write file
 				fs.writeFile(file.path + file.name + '.' + file.type, file.content, function (err) {
-  					if (err) return console.log(err);
-  					console.log(file.path + file.name + '.' + file.type);
-  					console.log(file.content);
-  					next();
+					if (err) return console.log(err);
+					console.log(file.path + file.name + '.' + file.type);
+					console.log(file.content);
+					next();
 				});	
 			});			
 		});	
-	}
+	};
 
 	/**
- 	* Creates a Docpad instance
- 	*/
+	* Creates a Docpad instance
+	*/
 	var instance = function(cb){
 		docpad.createInstance(docpadInstanceConfiguration, cb);
-	} 
+	};
 
 	/**
 	* publically accessibly methods
@@ -132,30 +140,19 @@ exports.static_site = function()
 
 		getInstance: instance,
 
-		getFiles: getFiles,	
+		getFiles: dbInterface.getFiles,	
 
-		getFile: getFile,
+		getFile: dbInterface.getFile,
 
-		insertFile: insertFile,
+		insertFile: dbInterface.insertFile,
+
+		updateFile: dbInterface.updateFile,
 
 		writeFile: writeFile
 		
 	};
 
 }();
-
-
-var site = exports.static_site;
-//test object
-(function(){
-
-	//var callback = function (obj) {
-	//	site.writeFile(obj, function(){console.log('complete');});
-	//}
-
-	//site.getFile({'name': 'about'}, callback);
-
-})()
 
 
 

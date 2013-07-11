@@ -30,15 +30,15 @@ testDocs.push(testIndex);
 
 testDocs.forEach(function(doc){
 	SiteFile.findOne({'name': doc.name, 'type': doc.type, 'path': doc.path}, function(err, file){
-	 	if (err) {
-	     	console.log(err.name);
-	     	return;
-	  	}
-	  	if (!file){
-	    	console.log('file not Found creating...');
-	    	doc.save();
-	    	return;
-	  	}
-	  		console.log('File found please rename your file');
+		if(err){
+			console.log(err.name);
+			return;
+		}
+		if(!file){
+			console.log('file not Found creating...');
+			doc.save();
+			return;
+		}
+		console.log('File found please rename your file');
 	});
 });

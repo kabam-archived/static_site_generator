@@ -16,17 +16,17 @@ describe('static site namespace', function(){
 
     it('a site object should exist', function(){  
       assert(site);
-    })
+    });
 
     it('rendering options should be set', function(){
       site.setOpts(testOpts);
       assert.deepEqual(testOpts, site.getOpts());
-    })
+    });
 
     it('configuration options should be set', function(){
       site.setConfig(docpadInstanceConfiguration);
       assert.deepEqual(docpadInstanceConfiguration, site.getConfig());
-    })
+    });
 
     it('generates a site without error', function(done){   
       site.getInstance(function(err, docpadInstance){
@@ -35,8 +35,7 @@ describe('static site namespace', function(){
           console.log('OK');
           done();
         });
-      })
-    })
-
-  })
-})
+      });
+    });
+  });
+});
