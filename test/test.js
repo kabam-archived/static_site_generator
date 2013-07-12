@@ -2,7 +2,7 @@ var assert = require("assert");
 var generator = require("../bin/ssg");
 var docpad = require('docpad');
 //set testing config
-var docpadInstanceConfiguration = {pluginsPaths: ['../node_modules','plugins'], outPath: '../out', srcPath: '../src'};
+var docpadInstanceConfiguration = {pluginsPaths: ['../node_modules','plugins'], outPath: '../out', srcPath: 'src'};
 
 describe('static site namespace', function(){
 

@@ -15,13 +15,26 @@ module.exports = function(grunt) {
         module: true
       }
     }
+  },
+    simplemocha: {
+    options: {
+      globals: ['should'],
+      timeout: 3000,
+      ignoreLeaks: false,
+      ui: 'bdd',
+      reporter: 'tap'
+    },
+
+    all: { src: 'test/**/*.js' }
   }
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
-
+  grunt.loadNpmTasks('grunt-simple-mocha');
   // Default task(s).
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('test', 'simplemocha');
+  grunt.registerTask('hint', 'jshint');
+  grunt.registerTask('default', ['jshint', 'simplemocha']);
 
 };
