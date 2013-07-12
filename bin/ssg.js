@@ -1,19 +1,20 @@
-var fs = require('fs');
-var mkdirp = require('mkdirp');
-require('../models/siteFile');
+var fs = require('fs'),
+mkdirp = require('mkdirp'),
+docpad = require('docpad'),
 SiteFile = require('mongoose').model('SiteFile');
+require('../models/siteFile');
 /**
  * Static Site namespace
+ * Module Pattern
  */
 exports.static_site = function()
 {
 	/**
 	* Object to set configuration settings
-	*/
-	var docpad = require('docpad');
+	*/	
 	var docpadInstanceConfiguration, opts = {};
 	/**
-	* DocPad callbacks
+	* DocPad callbacks used to call docpad methods
 	*/
 	var callbacks = {
 		render: function(err,docpadInstance){
@@ -81,6 +82,11 @@ exports.static_site = function()
 				console.log('The raw response from Mongo was ', raw);
 				next();
 			});
+		},
+
+		deleteFile: function(query, next){
+			if(!query || Object.keys(query).length === 0) return;
+
 		}
 	};
 
@@ -101,7 +107,6 @@ exports.static_site = function()
 			});			
 		});	
 	};
-
 	/**
 	* Creates a Docpad instance
 	*/
@@ -110,7 +115,7 @@ exports.static_site = function()
 	};
 
 	/**
-	* publically accessibly methods
+	* publically accessible methods
 	*/
 	return {
 
