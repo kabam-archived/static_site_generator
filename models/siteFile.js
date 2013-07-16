@@ -1,5 +1,8 @@
 var mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/ssg_dev');
+var config = require('yaml-config');
+var settings = config.readConfig('../../../config/config.yaml');
+console.log(settings.db);
+mongoose.connect(settings.db);
 
 
  var siteFileSchema = mongoose.Schema({
