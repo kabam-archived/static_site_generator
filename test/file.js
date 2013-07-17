@@ -9,7 +9,8 @@ var testAbout = new SiteFile({
 	type: 'html.md',
 	content: 'here is some **markdown**',
 	siteID: 'test',
-    path: 'src/documents/'
+    path: 'src/documents/',
+    fullPath: this.path + this.name + '.' + this.path
 });
 
 var testIndex = new SiteFile({

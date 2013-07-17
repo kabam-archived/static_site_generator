@@ -2,7 +2,7 @@ var assert = require("assert");
 var generator = require("../bin/ssg");
 var docpad = require('docpad');
 //set testing config
-var docpadInstanceConfiguration = {pluginsPaths: ['../node_modules','plugins'], outPath: '../out', srcPath: 'src'};
+var docpadInstanceConfiguration = {};
 
 describe('static site namespace', function(){
 
@@ -30,9 +30,7 @@ describe('static site namespace', function(){
 
     it('generates a site without error', function(done){   
       site.getInstance(function(err, docpadInstance){
-        docpadInstance.action('generate', function(err,result){
-          if (err)  return console.log(err.stack);
-          console.log('OK');
+        docpadInstance.action('generate', function(result){
           done();
         });
       });

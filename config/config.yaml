@@ -4,9 +4,6 @@ development:
   app:
     name: MyWebClass Static Site Generator Development Version
     url: http://node.mywebclass.org
-  google:
-    realm: http://node.mywebclass.org
-    callbackURL: http://node.mywebclass.org/auth/google/return
   smtp:
     service: Gmail
     user: USER@DOMAIN
@@ -19,9 +16,6 @@ test:
   app:
     name: MyWebClass Static Site Generator Testing Version
     url: http://node.mywebclass.org
-  google:
-    realm: http://node.mywebclass.org
-    callbackURL: http://node.mywebclass.org/auth/google/return
   smtp:
     service: Gmail
     user: USER@DOMAIN
@@ -34,9 +28,6 @@ production:
   app:
     name: MyWebClass Static Site Generator
     url: http://node.mywebclass.org
-  google:
-    realm: http://node.mywebclass.org
-    callbackURL: http://node.mywebclass.org/auth/google/return
   smtp:
     service: Gmail
     user: USER@DOMAIN

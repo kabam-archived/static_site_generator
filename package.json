@@ -11,7 +11,8 @@
     "docpad": "6.44.0",
     "docpad-plugin-marked": "~2.1.1",
     "mongoose": "3.6.13",
-    "mkdirp": "*"
+    "mkdirp": "*",
+    "yaml-config": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

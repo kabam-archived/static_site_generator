@@ -98,7 +98,7 @@ exports.static_site = function()
 				if(err) return console.log(err);
 				console.log(file.path + ' created or exists');
 				//write file
-				fs.writeFile(file.path + file.name + '.' + file.type, file.content, function (err) {
+				fs.writeFile(file.path.full, file.content, function (err) {
 					if (err) return console.log(err);
 					console.log(file.path + file.name + '.' + file.type);
 					console.log(file.content);
