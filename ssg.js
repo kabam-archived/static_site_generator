@@ -2,12 +2,12 @@ var fs = require('fs'),
 mkdirp = require('mkdirp'),
 docpad = require('docpad'),
 SiteFile = require('mongoose').model('SiteFile');
-require('../models/siteFile');
+require('./models/siteFile');
 /**
  * Static Site namespace
  * Module Pattern
  */
-exports.static_site = function()
+var static_site = function()
 {
 	/**
 	* Object to set configuration settings
@@ -159,6 +159,6 @@ exports.static_site = function()
 
 }();
 
-
+ module.exports = static_site;
 
 

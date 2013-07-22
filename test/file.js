@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var SiteFile = require('../models/siteFile');
 SiteFile = mongoose.model('SiteFile');
 var assert = require("assert");
-var generator = require("../bin/ssg");
+var generator = require("../ssg");
 
 var testAbout = new SiteFile({
 	name: 'about',
@@ -21,8 +21,6 @@ var testIndex = new SiteFile({
 	path: 'src/documents/'
 });
 
-var site = generator.static_site;
-
 describe('Site File Schema', function(){
 
   describe('new record', function(){
@@ -33,28 +31,28 @@ describe('Site File Schema', function(){
     });
 
     it('require parameters when requesting a single document', function(){
-        assert.equal(site.getFile({}), undefined);
+        assert.equal(generator.getFile({}), undefined);
     });
 
     it('finds a single document', function(done){
-        site.getFile({'name': testAbout.name}, done);
+        generator.getFile({'name': testAbout.name}, done);
     });
 
     it('returns a document collection', function(done){
-        site.getFiles({}, done);
+        generator.getFiles({}, done);
     });
 
     it('requires parameters to insert a new document', function(){
-        assert.equal(site.insertFile({}, undefined));
+        assert.equal(generator.insertFile({}, undefined));
     });
 
     it('inserts a new document if it does not exist', function(done){
-        site.insertFile(testIndex,done);
+        generator.insertFile(testIndex,done);
     });
 
     it('updates an existing document', function(done){
         var testUpdate = '---\ntitle: "Welcome!"\nlayout: "default"\nisPage: true\n---\n\n<p>Welcome to My Website! This is a test!</p>';
-        site.updateFile({name: testIndex.name, type: testIndex.type, path: testIndex.path}, {content: testUpdate}, done);
+        generator.updateFile({name: testIndex.name, type: testIndex.type, path: testIndex.path}, {content: testUpdate}, done);
     });
   });
 });
