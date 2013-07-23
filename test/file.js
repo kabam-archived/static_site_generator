@@ -24,6 +24,9 @@ var testIndex = new SiteFile({
 describe('Site File Schema', function(){
 
   describe('new record', function(){
+    it('returns all site names', function(done){
+        generator.getSites({}, done);
+    });
 
     it('a SiteFile record should exist', function(){  
       assert(testAbout);

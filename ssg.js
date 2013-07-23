@@ -35,6 +35,15 @@ var static_site = function()
 	* Database functions
 	*/
 	var dbInterface = {
+
+		getAllSites: function(opts, next){
+			SiteFile.find({}, {'_id': 0, 'siteID': 1}, function (err, sites){
+				if(err) return;
+				console.log(sites);
+				next(sites);
+			});
+		},
+
 		//return files in array
 		getFiles: function(opts, next){
 			if(!opts) opts = {};
@@ -144,6 +153,8 @@ var static_site = function()
 		},
 
 		getInstance: instance,
+
+		getSites: dbInterface.getAllSites,
 
 		getFiles: dbInterface.getFiles,	
 
