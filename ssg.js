@@ -1,8 +1,9 @@
+require('./models/siteFile');
 var fs = require('fs'),
 mkdirp = require('mkdirp'),
 docpad = require('docpad'),
 SiteFile = require('mongoose').model('SiteFile');
-require('./models/siteFile');
+
 /**
  * Static Site namespace
  * Module Pattern
