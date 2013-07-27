@@ -24,18 +24,18 @@ module.exports = function(grunt) {
         },
         src: ['Gruntfile.js', 'ssg.js', 'bin/**/*.js', 'test/**/*.js']
       }
-  },
-    simplemocha: {
-    options: {
-      globals: ['should'],
-      timeout: 3000,
-      ignoreLeaks: true,
-      ui: 'bdd',
-      reporter: 'tap'
     },
+    simplemocha: {
+      options: {
+        globals: ['should'],
+        timeout: 3000,
+        ignoreLeaks: true,
+        ui: 'bdd',
+        reporter: 'tap'
+      },
 
-    all: { src: 'test/**/*.js' }
-  }
+      all: { src: 'test/**/*.js' }
+    }
   });
 
   // Load the plugin that provides the "uglify" task.
