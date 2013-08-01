@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var SiteFile = require('../models/siteFile');
 SiteFile = mongoose.model('SiteFile');
 var assert = require("assert");
-var generator = require("../ssg");
+var generator = require("../ssg").db;
 
 var testAbout = new SiteFile({
 	name: 'about',
@@ -25,7 +25,7 @@ describe('Site File Schema', function(){
 
   describe('new record', function(){
     it('returns all site names', function(done){
-        generator.getSites({}, done);
+        generator.getSites({}, function(){ done(); });
     });
 
     it('a SiteFile record should exist', function(){  
@@ -42,7 +42,7 @@ describe('Site File Schema', function(){
     });
 
     it('returns a document collection', function(done){
-        generator.getFiles({}, done);
+        generator.getFiles({}, function(){ done(); });
     });
 
     it('requires parameters to insert a new document', function(){

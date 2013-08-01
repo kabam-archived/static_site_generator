@@ -1,5 +1,5 @@
 var assert = require("assert");
-var generator = require("../ssg");
+var generator = require("../ssg").staticSite;
 var docpad = require('docpad');
 //set testing config
 var docpadInstanceConfiguration = {};
